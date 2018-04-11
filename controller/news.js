@@ -1,6 +1,7 @@
 const {Router} = require("express");
 const router = Router();
-const news = require("../database/model/news")
+const news = require("../database/model/news");
+const score = require("../database/model/score")
 
 router.post("/add",(req, res, next) => {
     const {title, type, img, content, author, desc} = req.body;
@@ -16,20 +17,12 @@ router.post("/add",(req, res, next) => {
         next(err)
     })
 })
-router.post("/get", (req, res, next) => {
-    let {id} = req.body;
-    news.update({_id: {$in: id}}, {$set: {type: 666}},{multi:true}).then(data => {
-        console.log(data)
-        res.json({
-            data: "success"
-        })
-    })
-})
+
 router.get("/get", (req, res, next) => {
-    let {page=1, pageSize=10,id, type} = req.body;
+    let {page=1, pageSize=10,id, type} = req.query;
     page = parseInt(page);
     pageSize = parseInt(pageSize);
-
+    console.log(id)
     if(!id){
         let params = type == undefined ? {} : {type}
 
@@ -45,7 +38,7 @@ router.get("/get", (req, res, next) => {
         })
     }
     else {
-        news.findOne().then(data => {
+        news.findOne({_id: id}).then(data => {
             res.json({
                 data,
                 code: 200,
@@ -55,6 +48,14 @@ router.get("/get", (req, res, next) => {
             new Error(err)
             next(err)
         })
+
+        if(req.user){
+            console.log(req.user)
+            score.create({userId: req.user.data.userId,type: 2, typeName: "查看新闻眼", score: 0.1}).then(data => {
+                console.log(data)
+            })
+
+        }
     }
 })
 
