@@ -29,4 +29,20 @@ router.post("/login", (req, res) => {
 
 })
 
+router.post("/getUserInfo",(req, res) => {
+    let { token } = req.body || req.query
+    jwt.verify(token,'yao',(err, decode) => {
+        if(err){
+            res.status(401).send("登录状态失效，请重新登录");
+        }
+        else {
+            console.log(decode)
+            res.json({
+                userName: "姚君荣",
+                avatar: 'https://avatars2.githubusercontent.com/u/30630780?s=460&v=4'
+            })
+        }
+    })
+})
+
 module.exports = router;
