@@ -1,7 +1,9 @@
 const {Router} = require("express");
 const router = Router();
 const getData = require("./getData");
-const jwt = require("express-jwt")
+const jwt = require("express-jwt");
+const tokenConfig = require("../config/tokenConfig");
+const getToken = require("./function/getToken")
 
 router.use("/uploadToken", require("./upload"));
 router.use("/category", require("./newsCategory"));
@@ -17,7 +19,22 @@ router.get("/getDate", (req, res, next) => {
         })
      })
 });
+router.use("/commonDiscuss",//民主评议
+    jwt({
+        secret: tokenConfig.secret,
+        credentialsRequired:false,
+        getToken: getToken
+    }),
+    require("./commonDiscuss"));
 
+router.use("/branch", require("../controller/branch"));
+router.use("/personalSummary",
+    jwt({
+        secret: tokenConfig.secret,
+        credentialsRequired:false,
+        getToken: getToken
+    }),
+    require("../controller/personalSummary"));
 
 
 module.exports = router;

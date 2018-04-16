@@ -1,0 +1,1 @@
+const {Router} = require("express");const router = Router();const branch = require("../database/model/branch");router.get("/get", (req, res, next) => {    branch.find().then(data => {        res.json({            data,            code: 200,            msg: "success"        })    })})module.exports = router;
