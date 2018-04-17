@@ -27,7 +27,7 @@ router.use("/commonDiscuss",//民主评议
     }),
     require("./commonDiscuss"));
 
-router.use("/branch", require("../controller/branch"));
+router.use("/branch", require("./branch"));
 router.use("/personalSummary",
     jwt({
         secret: tokenConfig.secret,
@@ -35,6 +35,9 @@ router.use("/personalSummary",
         getToken: getToken
     }),
     require("../controller/personalSummary"));
+
+router.use("/invitation", require("../config/jwtVerify"));
+router.use("/invitation", require("./invitation"))
 
 
 module.exports = router;

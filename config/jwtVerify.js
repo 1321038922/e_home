@@ -1,0 +1,1 @@
+const jwt = require("express-jwt");const getToken = require("../controller/function/getToken");const tokenConfig = require("./tokenConfig")module.exports = jwt({        secret: tokenConfig.secret,        getToken: getToken    })

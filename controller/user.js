@@ -99,6 +99,7 @@ router.post("/login", (req, res, next) => {
             let userInfo = {
                 id: data._id,
                 name: data.userName,
+                avatar: data.avatar,
                 idCardNumber: data.idCardNumber,
                 level: data.level
             }
